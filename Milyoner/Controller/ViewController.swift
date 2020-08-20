@@ -12,14 +12,15 @@ class ViewController: UIViewController {
     @IBOutlet weak var questionLabel: UILabel!
     @IBOutlet weak var trueButton: UIButton!
     @IBOutlet weak var falseButton: UIButton!
+    @IBOutlet weak var scoreLabel: UILabel!
+
     
     var quizBrain = QuizBrain()
     
-    
-    
     override func viewDidLoad() {
-        super.viewDidLoad()
         
+        super.viewDidLoad()
+       
         updateUI()
         
     }
@@ -28,28 +29,31 @@ class ViewController: UIViewController {
         
         let userAnswer = sender.currentTitle!
         
-        if quizBrain.checkAnswer(userAnswer) { //if is true
-            sender.backgroundColor = .green
-            print("Right")
-        } else { //otherwise it is false
-            sender.backgroundColor = .red
-            print("Wrong")
+        if quizBrain.checkAnswer(userAnswer) {
+            
+            sender.setBackgroundImage(#imageLiteral(resourceName: "green"), for: .normal)
+            
+        } else {
+            
+            sender.setBackgroundImage(#imageLiteral(resourceName: "red"), for: .normal)
         }
         
-        if questionNumber < quiz.count - 1 { //ya da questionNumber + 1 < quiz.count kullanabilirdik. Iki turlu de out of range almanin onune geceriz.
-            questionNumber += 1
-        } else {
-            questionNumber = 0
-        }
+        quizBrain.nextQuestion()
         
         Timer.scheduledTimer(timeInterval: 0.4, target: self, selector: #selector(updateUI), userInfo: nil, repeats: false)
     }
     
 
     @objc func updateUI(){
+        
         questionLabel.text = quizBrain.getQuestionText()
-        trueButton.backgroundColor = .clear
-        falseButton.backgroundColor = .clear
+        
+        scoreLabel.text = "\(quizBrain.getScore()) 💰"
+        
+        trueButton.setBackgroundImage(#imageLiteral(resourceName: "buttonimage"), for: .normal)
+        
+        falseButton.setBackgroundImage(#imageLiteral(resourceName: "buttonimage"), for: .normal)
+        
         
     }
 }
