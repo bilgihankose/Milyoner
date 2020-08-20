@@ -13,14 +13,15 @@ class ViewController: UIViewController {
     @IBOutlet weak var trueButton: UIButton!
     @IBOutlet weak var falseButton: UIButton!
     @IBOutlet weak var scoreLabel: UILabel!
-
+    let image = UIImage()
     
     var quizBrain = QuizBrain()
     
     override func viewDidLoad() {
         
         super.viewDidLoad()
-       
+        self.view.backgroundColor = UIColor(patternImage: UIImage(named: "background")!)
+        
         updateUI()
         
     }
@@ -30,11 +31,12 @@ class ViewController: UIViewController {
         let userAnswer = sender.currentTitle!
         
         if quizBrain.checkAnswer(userAnswer) {
-            
+            hapticFeedback()
             sender.setBackgroundImage(#imageLiteral(resourceName: "green"), for: .normal)
             
         } else {
             
+            hapticFeedback()
             sender.setBackgroundImage(#imageLiteral(resourceName: "red"), for: .normal)
         }
         
@@ -43,18 +45,25 @@ class ViewController: UIViewController {
         Timer.scheduledTimer(timeInterval: 0.4, target: self, selector: #selector(updateUI), userInfo: nil, repeats: false)
     }
     
-
+    
     @objc func updateUI(){
         
         questionLabel.text = quizBrain.getQuestionText()
         
         scoreLabel.text = "\(quizBrain.getScore()) 💰"
         
-        trueButton.setBackgroundImage(#imageLiteral(resourceName: "buttonimage"), for: .normal)
+        trueButton.setBackgroundImage(#imageLiteral(resourceName: "button"), for: .normal)
         
-        falseButton.setBackgroundImage(#imageLiteral(resourceName: "buttonimage"), for: .normal)
+        falseButton.setBackgroundImage(#imageLiteral(resourceName: "button"), for: .normal)
         
         
+    }
+    
+    
+    func hapticFeedback(){
+        let generator = UIImpactFeedbackGenerator(style: .medium)
+        generator.prepare()
+        generator.impactOccurred()
     }
 }
 

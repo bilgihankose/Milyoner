@@ -59,6 +59,5 @@ struct QuizBrain {
            questionNumber = 0
         }
     }
-    
-    
+        
 }
